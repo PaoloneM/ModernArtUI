@@ -20,3 +20,5 @@ bin/dexedLibs/android-support-v4-0ac26ad444c4f9b91185acd568211075.jar
 bin/classes/com/example/modernartui/BuildConfig.class
 
 bin/classes/com/example/modernartui/ModernArt.class
+
+bin/classes/com/example/modernartui/ModernArt$1.class
