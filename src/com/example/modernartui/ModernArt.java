@@ -2,6 +2,7 @@ package com.example.modernartui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -13,37 +14,69 @@ import java.util.Random;
 
 public class ModernArt extends Activity {
 
-    private static int COLORSCALE = 0;
-    private static int GREYSCALE = 1;
-    private static int VIEWS_NUMBER = 5;
+    private static final int COLORSCALE = 0;
+    private static final int GREYSCALE = 1;
+    private static final int VIEWS_NUMBER = 5;
+	private static final String TAG = "ModernArt-App";
+	private static final String VIEW_BG_KEY = "viewBackGroundColor";
+    
+	private ArrayList<TextView> mViews;
+	private int[] mViewsBgColors = new int[VIEWS_NUMBER];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modern_art);
 
-        // Create resources array
+        // if no saved instance available builds random backgrounds color 
+        if (savedInstanceState == null) {
+        	
+        	for (int i = 0; i < (VIEWS_NUMBER); i++){
+		        // Background colors array
+		        mViewsBgColors[i] = this.getRandomColor(COLORSCALE);
+		        
+        	}
+	        // randomly forces one of the text views background to gray scale
+	        Random randomView = new Random();
+	        mViewsBgColors[randomView.nextInt(VIEWS_NUMBER)] = this.getRandomColor(GREYSCALE);
+        	
+        }
+        else {
+        	// load saved colors
+        	for (int i = 0; i < (VIEWS_NUMBER); i++){
+        		
+		        mViewsBgColors[i] = savedInstanceState.getInt(VIEW_BG_KEY + i);
+		        
+        	}
 
-        ArrayList<TextView> mViews = new ArrayList<TextView>();
+        }
 
+        // Create views array list 
+        mViews = new ArrayList<TextView>();
+
+        // Load text views into array
         for (int i = 1; i < (VIEWS_NUMBER+1); i++){
 
+        	// Views array list
             String twName = "Tw" + i;
             int twId = getResources().getIdentifier(twName, "id", getPackageName());
             if (twId != 0){
                 mViews.add((TextView) this.findViewById(twId));
             }
-
+                        
         }
-
-        // set default color for text views
-        for (TextView v : mViews) { v.setBackgroundColor(this.getRandomColor(COLORSCALE)); }
-
-        Random randomView = new Random();
-        mViews.get(randomView.nextInt(5)).setBackgroundColor(this.getRandomColor(GREYSCALE));
+        
+        // Update text views background colors
+        updateTextViewsBGcolor();
 
 
     }
+
+
+	private void updateTextViewsBGcolor() {
+		// set default color for text views
+        for (TextView v : mViews) { v.setBackgroundColor(mViewsBgColors[mViews.indexOf(v)]); }
+	}
 
 
     @Override
@@ -82,4 +115,24 @@ public class ModernArt extends Activity {
         return randomColor;
 
     }
+    
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        Log.i(TAG, "Entered onSaveInstanceState");
+
+        // save the current foreground feed
+        for (int i = 0; i < (VIEWS_NUMBER); i++){
+        	
+        	savedInstanceState.putInt(VIEW_BG_KEY + i, mViewsBgColors[i]);         	
+            Log.i(TAG, "Saved #" + i + " color " +  mViewsBgColors[i]);
+
+        }
+        
+        // as recommended by android basics training, always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
+
+
 }
