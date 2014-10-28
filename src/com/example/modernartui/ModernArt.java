@@ -7,25 +7,42 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.graphics.Color;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 
 public class ModernArt extends Activity {
+
+    private static int COLORSCALE = 0;
+    private static int GREYSCALE = 1;
+    private static int VIEWS_NUMBER = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modern_art);
 
+        // Create resources array
+
+        ArrayList<TextView> mViews = new ArrayList<TextView>();
+
+        for (int i = 1; i < (VIEWS_NUMBER+1); i++){
+
+            String twName = "Tw" + i;
+            int twId = getResources().getIdentifier(twName, "id", getPackageName());
+            if (twId != 0){
+                mViews.add((TextView) this.findViewById(twId));
+            }
+
+        }
+
         // set default color for text views
-        TextView txtView = (TextView)findViewById(R.id.Tw1);
-        txtView.setBackgroundColor(Color.YELLOW);
-        txtView = (TextView)findViewById(R.id.Tw2);
-        txtView.setBackgroundColor(Color.GREEN);
-        txtView = (TextView)findViewById(R.id.Tw3);
-        txtView.setBackgroundColor(Color.BLUE);
-        txtView = (TextView)findViewById(R.id.Tw4);
-        txtView.setBackgroundColor(Color.GRAY);
-        txtView = (TextView)findViewById(R.id.Tw5);
-        txtView.setBackgroundColor(Color.RED);
+        for (TextView v : mViews) { v.setBackgroundColor(this.getRandomColor(COLORSCALE)); }
+
+        Random randomView = new Random();
+        mViews.get(randomView.nextInt(5)).setBackgroundColor(this.getRandomColor(GREYSCALE));
+
+
     }
 
 
@@ -46,5 +63,23 @@ public class ModernArt extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // Create a random color or a random grey scale tone
+    private int getRandomColor(int colorMode){
+
+        Random randomInt = new Random();
+        int randomColor = 0;
+
+        if (colorMode == COLORSCALE) {
+            randomColor = Color.rgb(randomInt.nextInt(256), randomInt.nextInt(256), randomInt.nextInt(256));
+        }
+        else {
+            randomColor = randomInt.nextInt(256);
+            randomColor = Color.rgb(randomColor, randomColor, randomColor);
+        }
+
+        return randomColor;
+
     }
 }
