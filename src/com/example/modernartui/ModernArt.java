@@ -39,12 +39,14 @@ public class ModernArt extends Activity {
         	for (int i = 0; i < (VIEWS_NUMBER); i++){
 		        // Background colors array
 		        mViewsActualBgColors[i] = this.getRandomColor(COLORSCALE);
-		        mViewsBaseBgColors[i] = this.getRandomColor(COLORSCALE);
+		        mViewsBaseBgColors[i] = mViewsActualBgColors[i];
 		        
         	}
 	        // randomly forces one of the text views background to gray scale
 	        Random randomView = new Random();
-	        mViewsActualBgColors[randomView.nextInt(VIEWS_NUMBER)] = this.getRandomColor(GREYSCALE);
+	        int greyViewIndex = randomView.nextInt(VIEWS_NUMBER);
+	        mViewsActualBgColors[greyViewIndex] = this.getRandomColor(GREYSCALE);
+	        mViewsBaseBgColors[greyViewIndex] = mViewsActualBgColors[greyViewIndex];
         	
         }
         else {
@@ -52,6 +54,7 @@ public class ModernArt extends Activity {
         	for (int i = 0; i < (VIEWS_NUMBER); i++){
         		
 		        mViewsActualBgColors[i] = savedInstanceState.getInt(VIEW_ACTUAL_BG_KEY + i);
+		        mViewsBaseBgColors[i] = savedInstanceState.getInt(VIEW_BASE_BG_KEY + i);
 		        
         	}
 
@@ -97,6 +100,7 @@ public class ModernArt extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
+            	Log.i(TAG, "Entered onProgressChanged with progress value = " + progress);
             	calcBGcolors(progress);
                 updateTextViewsBGcolor();
             }
@@ -157,15 +161,12 @@ public class ModernArt extends Activity {
             int baseRed = Color.red(mViewsBaseBgColors[i]);
             int baseGreen = Color.green(mViewsBaseBgColors[i]);
             int baseBlue = Color.blue(mViewsBaseBgColors[i]);
-            int negRed = 255 - baseRed;
-            int negGreen = 255 - baseGreen;
-            int negBlue = 255 - baseBlue;
-            int distRed = Math.max(baseRed, negRed) - Math.min(baseRed, negRed);
-            int distGreen = Math.max(baseGreen, negGreen) - Math.min(baseGreen, negGreen);
-            int distBlue = Math.max(baseBlue, negBlue) - Math.min(baseBlue, negBlue);
-            int calcRed = Math.min(baseRed, negRed) + distRed * progress / 100;
-            int calcGreen = Math.min(baseGreen, negGreen) + distGreen * progress / 100;
-            int calcBlue = Math.min(baseBlue, negBlue) + distBlue * progress / 100;
+            int distRed = 255 - (2 * baseRed);
+            int distGreen = 255 - (2 * baseGreen);
+            int distBlue = 255 - (2 * baseBlue);
+            int calcRed = baseRed + (distRed * progress / 100);
+            int calcGreen = baseGreen + (distGreen * progress / 100);
+            int calcBlue =  baseBlue  + (distBlue * progress / 100);
         	mViewsActualBgColors[i] = Color.rgb(calcRed, calcGreen, calcBlue);
         	
         }
