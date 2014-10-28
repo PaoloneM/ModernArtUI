@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.graphics.Color;
 
 
 public class ModernArt extends Activity {
@@ -12,6 +14,18 @@ public class ModernArt extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modern_art);
+
+        // set default color for text views
+        TextView txtView = (TextView)findViewById(R.id.Tw1);
+        txtView.setBackgroundColor(Color.YELLOW);
+        txtView = (TextView)findViewById(R.id.Tw2);
+        txtView.setBackgroundColor(Color.GREEN);
+        txtView = (TextView)findViewById(R.id.Tw3);
+        txtView.setBackgroundColor(Color.BLUE);
+        txtView = (TextView)findViewById(R.id.Tw4);
+        txtView.setBackgroundColor(Color.GRAY);
+        txtView = (TextView)findViewById(R.id.Tw5);
+        txtView.setBackgroundColor(Color.RED);
     }
 
 
