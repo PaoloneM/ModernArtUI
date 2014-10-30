@@ -22,3 +22,17 @@ bin/classes/com/example/modernartui/BuildConfig.class
 bin/classes/com/example/modernartui/ModernArt.class
 
 bin/classes/com/example/modernartui/ModernArt$1.class
+
+bin/classes/com/example/modernartui/ModernArt$AlertDialogFragment.class
+
+bin/classes/com/example/modernartui/ModernArt$AlertDialogFragment$1.class
+
+bin/classes/com/example/modernartui/ModernArt$AlertDialogFragment$2.class
+
+bin/classes/com/example/modernartui/R$id.class
+
+bin/classes/com/example/modernartui/R$string.class
+
+bin/classes/com/example/modernartui/R$style.class
+
+gen/com/example/modernartui/R.java

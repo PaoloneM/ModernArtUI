@@ -3,6 +3,11 @@
 
     <string name="app_name">Modern Art UI</string>
     <string name="hello_world"></string>
-    <string name="action_settings">Settings</string>
-
+    <string name="more_info">More Information</string>
+    
+    <string name="alert_title">Inspired by the work of artists such as Piet Mondrian and Ben Nicholson</string>
+    <string name="alert_info">Click below to learn more</string>
+    <string name="alert_negative">NotNow</string>
+    <string name="alert_positive">Visit Moma</string>
+   
 </resources>

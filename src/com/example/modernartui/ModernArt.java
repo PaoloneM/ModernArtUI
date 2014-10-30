@@ -1,6 +1,10 @@
 package com.example.modernartui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,8 +16,6 @@ import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.lang.Math;
-
 
 public class ModernArt extends Activity {
 
@@ -27,6 +29,7 @@ public class ModernArt extends Activity {
 	private ArrayList<TextView> mViews;
 	private int[] mViewsActualBgColors = new int[VIEWS_NUMBER];
 	private int[] mViewsBaseBgColors = new int[VIEWS_NUMBER];
+	private DialogFragment mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +131,13 @@ public class ModernArt extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+        case R.id.more_info:
+			// Create a new AlertDialogFragment
+			mDialog = AlertDialogFragment.newInstance();
+			// Show AlertDialogFragment
+			mDialog.show(getFragmentManager(), getResources().getString(R.string.alert_title));
+			break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,6 +200,44 @@ public class ModernArt extends Activity {
         super.onSaveInstanceState(savedInstanceState);
 
     }
+
+	// Class that creates the AlertDialog
+	public static class AlertDialogFragment extends DialogFragment {
+
+		public static AlertDialogFragment newInstance() {
+			return new AlertDialogFragment();
+		}
+
+		// Build AlertDialog using AlertDialog.Builder
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+					.setMessage(getResources().getString(R.string.alert_info))
+					
+					// User cannot dismiss dialog by hitting back button
+					.setCancelable(false)
+					
+					// Set up No Button
+					.setNegativeButton(getResources().getString(R.string.alert_negative),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+	/*								((ModernArt) getActivity())
+											.continueShutdown(false);
+*/								}
+							})
+							
+					// Set up Yes Button
+					.setPositiveButton(getResources().getString(R.string.alert_positive),
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										final DialogInterface dialog, int id) {
+/*									((ModernArt) getActivity())
+											.continueShutdown(true);
+*/								}
+							}).create();
+		}
+	}
 
 
 }
